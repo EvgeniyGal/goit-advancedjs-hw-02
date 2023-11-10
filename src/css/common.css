@@ -47,3 +47,8 @@ button[data-start] {
   font-size: 20px;
   padding: 4px 25px;
 }
+
+button[data-stop] {
+  font-size: 20px;
+  padding: 4px 25px;
+}
