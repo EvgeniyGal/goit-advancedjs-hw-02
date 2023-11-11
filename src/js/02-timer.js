@@ -47,6 +47,7 @@ function handlerClickStart(ev) {
     1000
   );
   ev.target.disabled = true;
+  elements.input.disabled = true;
 }
 
 function setDataToTextfield(ms) {
@@ -58,6 +59,7 @@ function setDataToTextfield(ms) {
     elements.secondsField.textContent = addLeadingZero(data.seconds);
   } else {
     clearInterval(intervalId);
+    elements.input.disabled = false;
   }
 }
 
