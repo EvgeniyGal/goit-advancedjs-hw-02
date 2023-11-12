@@ -21,25 +21,11 @@ function handlerFormSubmit(ev) {
 
   for (let i = 1; i <= formData.amount; i++) {
     createPromise(i, formData.delay)
-      .then(({ position, delay }) => {
-        iziToast.info({
-          timeout: delay,
-          position: 'topRight',
-          icon: null,
-          title: '✅',
-          color: 'green',
-          message: `Fulfilled promise ${position} in ${delay}ms`,
-        });
+      .then(data => {
+        showMassage(data, true);
       })
-      .catch(({ position, delay }) => {
-        iziToast.info({
-          timeout: delay,
-          position: 'topRight',
-          icon: null,
-          title: '❌',
-          color: 'red',
-          message: `Rejected promise ${position} in ${delay}ms`,
-        });
+      .catch(data => {
+        showMassage(data, false);
       });
 
     formData.delay += formData.step;
@@ -49,13 +35,24 @@ function handlerFormSubmit(ev) {
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
 
-  if (shouldResolve) {
-    return new Promise(res =>
-      setTimeout(() => res({ position, delay }), delay)
-    );
-  } else {
-    return new Promise((_, rej) =>
-      setTimeout(() => rej({ position, delay }), delay)
-    );
-  }
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        res({ position, delay });
+      } else {
+        rej({ position, delay });
+      }
+    }, delay);
+  });
+}
+
+function showMassage({ position, delay }, isResolved) {
+  iziToast.info({
+    timeout: delay,
+    position: 'topRight',
+    icon: null,
+    title: isResolved ? '✅' : '❌',
+    color: isResolved ? 'green' : 'red',
+    message: `Rejected promise ${position} in ${delay}ms`,
+  });
 }

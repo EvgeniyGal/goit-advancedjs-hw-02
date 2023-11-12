@@ -6,6 +6,7 @@ const elements = {
 
 elements.start.addEventListener('click', handlerClickStart);
 elements.stop.addEventListener('click', handlerClickStop);
+elements.stop.disabled = true;
 
 let intervalId;
 
@@ -14,11 +15,13 @@ function handlerClickStart(ev) {
     elements.body.style.backgroundColor = getRandomHexColor();
   }, 1000);
   ev.target.disabled = true;
+  elements.stop.disabled = false;
 }
 
-function handlerClickStop() {
+function handlerClickStop(ev) {
   clearInterval(intervalId);
   elements.start.disabled = false;
+  ev.target.disabled = true;
 }
 
 function getRandomHexColor() {
